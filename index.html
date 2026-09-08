@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EMBER — Secure Digital Document Management</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     AUTH SCREENS
+═══════════════════════════════════════════════════════ -->
+<div id="auth-screen" class="auth-screen">
+
+  <!-- LOGIN -->
+  <div id="login-panel" class="auth-panel">
+    <div class="auth-container">
+      <div class="auth-logo">
+        <div class="logo-mark">
+          <svg viewBox="0 0 40 40" fill="none" width="56" height="56">
+            <path d="M20 2L4 9v12c0 10 7 18.5 16 21 9-2.5 16-11 16-21V9L20 2z" fill="#1F2937"/>
+            <path d="M20 6L8 12v9c0 7.5 5.5 14 12 16 6.5-2 12-8.5 12-16v-9L20 6z" fill="#111827"/>
+            <path d="M18 20c0-2-1-3.5-2-5 1.5 1 3 2.5 3.5 4.5.3 1.2.1 2.5-.5 3.5-.6 1-1.5 1.7-2.5 2C17.5 24 18 22.2 18 20z" fill="#C2410C"/>
+            <path d="M21 18c0-3-1.5-5.5-3.5-7.5 2.5 1.5 5 4.5 5.5 8 .3 2 0 4-1 5.5-.8 1.3-2 2.2-3.5 2.5C20.5 24.5 21 21.5 21 18z" fill="#EA580C"/>
+            <path d="M24 16c0-4-2-7-5-9.5 3.5 1.5 7 5.5 7.5 10 .3 2.5 0 5-1.5 7-.8 1.2-2 2.2-3.5 2.5C23 23.5 24 20 24 16z" fill="#F97316" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="brand-name">EMBER</span>
+          <span class="brand-tag">Secure every document. Preserve every piece of evidence.</span>
+        </div>
+      </div>
+
+      <div class="auth-card signin-page">
+        <h2 class="auth-title">Sign In to EMBER</h2>
+
+        <div class="method-tabs">
+          <button class="method-tab active" data-method="email">Email</button>
+          <button class="method-tab" data-method="serial">Serial No.</button>
+          <button class="method-tab" data-method="aadhaar">Aadhaar</button>
+        </div>
+
+        <div id="method-email" class="method-panel active">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="login-email" placeholder="officer@ember.demo" />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="login-password" placeholder="••••••••" />
+          </div>
+        </div>
+
+        <div id="method-serial" class="method-panel">
+          <div class="form-group">
+            <label>Serial / Badge Number</label>
+            <input type="text" placeholder="SHO-2026-XXXXX" />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="••••••••" />
+          </div>
+        </div>
+
+        <div id="method-aadhaar" class="method-panel">
+          <div class="form-group">
+            <label>Aadhaar Number</label>
+            <input type="text" placeholder="XXXX XXXX XXXX" />
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="sendOTP()">Send OTP</button>
+          <div id="otp-field" class="form-group" style="display:none;margin-top:12px">
+            <label>OTP</label>
+            <input type="text" placeholder="XXXXXX" />
+            <span class="field-note warn">⚠ Prototype: Aadhaar OTP is simulated.</span>
+          </div>
+        </div>
+
+        <div class="captcha-box">
+          <label class="captcha-check">
+            <input type="checkbox" id="captcha-check" />
+            <span class="captcha-tick"></span>
+            I'm not a robot
+          </label>
+          <div class="captcha-badge">🛡 EMBER<br>Verification</div>
+        </div>
+
+        <button class="btn btn-primary btn-full" onclick="handleLogin()">
+          <span id="login-btn-text">Sign In</span>
+        </button>
+
+        <div class="auth-link">
+          <a href="#" onclick="showRegister()">New user? Register here</a>
+        </div>
+
+        <div class="demo-creds">
+          <p class="demo-label">Prototype Demo Credentials</p>
+          <div class="demo-list">
+            <button class="demo-item" onclick="fillDemo('legal@ember.demo','Legal Officer')"><span class="demo-email">legal@ember.demo</span><span class="demo-role">Legal Officer</span></button>
+            <button class="demo-item" onclick="fillDemo('citizen@ember.demo','Citizen')"><span class="demo-email">citizen@ember.demo</span><span class="demo-role">Citizen / Complainant</span></button>
+            <button class="demo-item" onclick="fillDemo('lawyer@ember.demo','Lawyer')"><span class="demo-email">lawyer@ember.demo</span><span class="demo-role">Lawyer</span></button>
+            <button class="demo-item" onclick="fillDemo('police@ember.demo','Police Officer')"><span class="demo-email">police@ember.demo</span><span class="demo-role">Police Officer</span></button>
+            <button class="demo-item" onclick="fillDemo('forensic@ember.demo','Forensic Expert')"><span class="demo-email">forensic@ember.demo</span><span class="demo-role">Forensic Expert</span></button>
+            <button class="demo-item" onclick="fillDemo('judge@ember.demo','Judge')"><span class="demo-email">judge@ember.demo</span><span class="demo-role">Judge / Court Official</span></button>
+          </div>
+          <p class="demo-pw">Password for all: <code>ember123</code></p>
+        </div>
+      </div>
+      <p class="auth-footer">© 2026 EMBER Secure Document Platform — Prototype v1.0</p>
+    </div>
+  </div>
+
+  <!-- REGISTER -->
+  <div id="register-panel" class="auth-panel" style="display:none">
+    <div class="auth-container">
+      <div class="auth-logo">
+        <div class="logo-mark">
+          <svg viewBox="0 0 40 40" fill="none" width="48" height="48">
+            <path d="M20 2L4 9v12c0 10 7 18.5 16 21 9-2.5 16-11 16-21V9L20 2z" fill="#1F2937"/>
+            <path d="M21 18c0-3-1.5-5.5-3.5-7.5 2.5 1.5 5 4.5 5.5 8 .3 2 0 4-1 5.5-.8 1.3-2 2.2-3.5 2.5C20.5 24.5 21 21.5 21 18z" fill="#EA580C"/>
+          </svg>
+        </div>
+        <span class="brand-name">EMBER</span>
+      </div>
+
+      <div class="auth-card">
+        <div class="reg-progress">
+          <div class="reg-step active" id="rp1">1</div>
+          <div class="reg-line" id="rl1"></div>
+          <div class="reg-step" id="rp2">2</div>
+          <div class="reg-line" id="rl2"></div>
+          <div class="reg-step" id="rp3">3</div>
+          <div class="reg-line" id="rl3"></div>
+          <div class="reg-step" id="rp4">4</div>
+        </div>
+
+        <div id="reg-step-1" class="reg-panel active">
+          <h2 class="auth-title">Contact Details</h2>
+          <p class="step-sub">Step 1 of 4</p>
+          <div class="form-group"><label>Phone Number</label><input type="tel" id="reg-phone" placeholder="+91 XXXXX XXXXX" /></div>
+          <div class="form-group"><label>Email Address</label><input type="email" id="reg-email" placeholder="you@example.com" /></div>
+          <div class="form-group"><label>Verification OTP</label><input type="text" id="reg-otp" placeholder="Enter OTP sent to your phone" /><span class="field-note warn">⚠ Prototype: OTP is simulated.</span></div>
+          <button class="btn btn-primary btn-full" onclick="regNext(1)">Continue</button>
+        </div>
+
+        <div id="reg-step-2" class="reg-panel">
+          <h2 class="auth-title">Identity</h2>
+          <p class="step-sub">Step 2 of 4</p>
+          <div class="form-group"><label>Full Name (as per Aadhaar / ID)</label><input type="text" id="reg-name" placeholder="Your legal name" /></div>
+          <div class="form-group"><label>Aadhaar Number</label><input type="text" placeholder="XXXX XXXX XXXX" /><span class="field-note warn">⚠ Prototype: Aadhaar verification is simulated.</span></div>
+          <button class="btn btn-primary btn-full" onclick="regNext(2)">Continue</button>
+          <button class="btn btn-ghost btn-full" onclick="regBack(2)">Back</button>
+        </div>
+
+        <div id="reg-step-3" class="reg-panel">
+          <h2 class="auth-title">Select Your Role</h2>
+          <p class="step-sub">Step 3 of 4</p>
+          <div class="role-list" id="reg-role-list">
+            <button class="role-opt" data-role="legal_officer">Legal Officer</button>
+            <button class="role-opt" data-role="citizen">Citizen / Complainant</button>
+            <button class="role-opt" data-role="lawyer">Lawyer</button>
+            <button class="role-opt" data-role="police">Police Officer / Field Officer</button>
+            <button class="role-opt" data-role="investigating">Investigating Officer</button>
+            <button class="role-opt" data-role="sho">Station House Officer</button>
+            <button class="role-opt" data-role="forensic">Forensic Expert / Lab Personnel</button>
+            <button class="role-opt" data-role="prosecutor">Public Prosecutor / Legal Officer</button>
+            <button class="role-opt" data-role="judge">Judge / Court Official</button>
+          </div>
+          <button class="btn btn-primary btn-full" style="margin-top:12px" onclick="regNext(3)">Continue</button>
+          <button class="btn btn-ghost btn-full" onclick="regBack(3)">Back</button>
+        </div>
+
+        <div id="reg-step-4" class="reg-panel">
+          <div class="reg-complete">
+            <div class="reg-icon"><i class="fa fa-clock"></i></div>
+            <h3>Verification Pending</h3>
+            <p>Your registration is under review. An administrator will verify your identity and role. You will be notified via email.</p>
+            <div class="reg-summary" id="reg-summary"></div>
+            <button class="btn btn-primary btn-full" onclick="finishReg()">Submit Registration</button>
+          </div>
+        </div>
+      </div>
+      <p class="auth-footer"><a href="#" onclick="showLogin()">← Back to Sign In</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     MAIN APP SHELL
+═══════════════════════════════════════════════════════ -->
+<div id="app-shell" class="app-shell" style="display:none">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-header" id="sidebar-header">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 40 40" fill="none" width="32" height="32" class="logo-svg">
+          <path d="M20 2L4 9v12c0 10 7 18.5 16 21 9-2.5 16-11 16-21V9L20 2z" fill="#1F2937"/>
+          <path d="M21 18c0-3-1.5-5.5-3.5-7.5 2.5 1.5 5 4.5 5.5 8 .3 2 0 4-1 5.5-.8 1.3-2 2.2-3.5 2.5C20.5 24.5 21 21.5 21 18z" fill="#EA580C"/>
+        </svg>
+        <span class="sidebar-brand">EMBER</span>
+      </div>
+      <button id="sidebar-toggle" class="sidebar-toggle" onclick="toggleSidebar()"><i class="fa fa-chevron-left"></i></button>
+    </div>
+
+    <div class="sidebar-role" id="sidebar-role">
+      <div class="role-label">Logged in as</div>
+      <div class="role-value" id="sidebar-role-text"></div>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebar-nav"></nav>
+
+    <div class="sidebar-footer">
+      <button class="sidebar-signout" onclick="handleLogout()"><i class="fa fa-sign-out-alt"></i><span>Sign Out</span></button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-wrapper">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button class="mobile-menu-btn" onclick="toggleMobileSidebar()"><i class="fa fa-bars"></i></button>
+      <div class="topbar-search">
+        <i class="fa fa-search"></i>
+        <input type="text" id="global-search" placeholder="Search cases, documents, evidence…" oninput="handleGlobalSearch(this.value)" />
+      </div>
+      <div class="topbar-user">
+        <div class="user-avatar" id="user-avatar-top"></div>
+        <div class="user-info" id="user-info-top"></div>
+        <div class="notif-dot" id="notif-dot" style="display:none"></div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="page-content" id="page-content"></main>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     MODAL OVERLAY
+═══════════════════════════════════════════════════════ -->
+<div id="modal-overlay" class="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box">
+    <div class="modal-header">
+      <h3 id="modal-title"></h3>
+      <button class="modal-close" onclick="closeModalDirect()"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     TOAST CONTAINER
+═══════════════════════════════════════════════════════ -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleMobileSidebar()"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
